@@ -4,7 +4,9 @@
   "description": "<div align=\"center\">   <h1>     Extension Boilerplate     </h1>",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "dev-server": "webpack-dev-server --inline --progress --open --hot --port 8081"
   },
   "repository": {
     "type": "git",
@@ -26,7 +28,8 @@
     "sass-loader": "^6.0.6",
     "url-loader": "^0.6.2",
     "vue": "^2.4.4",
-    "vue-awesome": "^2.3.4"
+    "vue-awesome": "^2.3.4",
+    "vue-style-loader": "^4.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -44,6 +47,7 @@
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^2.9.1"
   }
 }
