@@ -10,7 +10,10 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
     entry: {
         popup: path.resolve(__dirname, "./src/popup/main.js"),
-        background: path.resolve(__dirname, './src/background.js')
+        background: path.resolve(__dirname, './src/background.js'),
+        content: path.resolve(__dirname, './src/content.js'),
+        devtool: path.resolve(__dirname, './src/devtool/devtool.js'),
+        devtree: path.resolve(__dirname, './src/devtool/devtree.js'),
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -21,32 +24,32 @@ module.exports = {
         rules: [{
             test: /\.(less|css)$/,
             use: [
-              'vue-style-loader',
-              'css-loader'
+				'vue-style-loader',
+				'css-loader'
             ],
         },
         {
-          test: /\.vue$/,
-          loader: 'vue-loader',
-          options: {
-            loaders: {
-              scss: 'style-loader!css-loader!sass-loader',
-              sass: 'style-loader!css-loader!sass-loader?indentedSyntax',
-            }
-            // other vue-loader options go here
-          }
+			test: /\.vue$/,
+			loader: 'vue-loader',
+			options: {
+				loaders: {
+					scss: 'style-loader!css-loader!sass-loader',
+					sass: 'style-loader!css-loader!sass-loader?indentedSyntax',
+				}
+				// other vue-loader options go here
+			}
         },
         {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/
+			test: /\.js$/,
+			loader: 'babel-loader',
+			exclude: /node_modules/
         },
         {
-          test: /\.(png|jpg|gif|svg|ttf|woff|woff2|eot)$/,
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]?[hash]'
-          }
+			test: /\.(png|jpg|gif|svg|ttf|woff|woff2|eot)$/,
+			loader: 'file-loader',
+			options: {
+				name: '[name].[ext]?[hash]'
+			}
         }]
     },  
     devServer: {
@@ -60,36 +63,53 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         // webpack 执行之前删除dist下的文件
         new CleanWebpackPlugin(
-          ['dist/*'],
-          {
-            root: __dirname,//根目录
-            verbose: true,//开启在控制台输出信息
-            dry: false,//启用删除文件
-          }),
+			['dist/*'],
+			{
+				root: __dirname,//根目录
+				verbose: true,//开启在控制台输出信息
+				dry: false,//启用删除文件
+			}),
+
         //popup.html
         new HtmlWebpackPlugin({
-          template: __dirname + "/src/popup/popup.html",
-          filename: 'popup.html',
-          inject: 'body',
-          chunks: ['popup']
+			template: __dirname + "/src/popup/popup.html",
+			filename: 'popup.html',
+			inject: 'body',
+			chunks: ['popup']
         }),
-        
+
+        //devtree.html
+        new HtmlWebpackPlugin({
+			template: __dirname + "/src/devtool/devtree.html",
+			filename: 'devtree.html',
+			inject: 'body',
+			chunks: ['devtree']
+        }),
+
+        //devtool.html
+        new HtmlWebpackPlugin({
+			template: __dirname + "/src/devtool/devtool.html",
+			filename: 'devtool.html',
+			inject: 'body',
+			chunks: ['devtool']
+        }),
+
         // 拷贝静态资源(manifest.json)
         new CopyWebpackPlugin([
-          {
-            from: path.resolve(__dirname, 'src/assets/'),
-            to: 'static',
-            force: true,
-            // ignore: ['.*']
-          },
-          {
-            from: path.resolve(__dirname, 'manifest.json'),
-            to: path.resolve(__dirname, 'dist/')
-          }]),
+			{
+				from: path.resolve(__dirname, 'src/assets/'),
+				to: 'static',
+				force: true,
+				// ignore: ['.*']
+			},
+			{
+				from: path.resolve(__dirname, 'manifest.json'),
+				to: path.resolve(__dirname, 'dist/')
+			}]),
         new webpack.DefinePlugin({
-          'process.env': {
-            NODE_ENV: '"production"'
-          }
+			'process.env': {
+				NODE_ENV: '"production"'
+			}
         }),
         // new webpack.optimize.UglifyJsPlugin({
         //   sourceMap: true,
@@ -98,18 +118,17 @@ module.exports = {
         //   }
         // }),
         new webpack.LoaderOptionsPlugin({
-          minimize: true
-        })
-      ],
-      devtool: '#source-map',
-      devServer: {
-        contentBase: "./dist",//本地服务器所加载的页面所在的目录
-        historyApiFallback: true,//不跳转
-        noInfo: true,
-        inline: true,//实时刷新
-        overlay: true
-      },
-      performance: {
-        hints: false
-      }
+			minimize: true
+        })],
+		devtool: '#source-map',
+		devServer: {
+				contentBase: "./dist",//本地服务器所加载的页面所在的目录
+				historyApiFallback: true,//不跳转
+				noInfo: true,
+				inline: true,//实时刷新
+				overlay: true
+		},
+		performance: {
+				hints: false
+		}
 }

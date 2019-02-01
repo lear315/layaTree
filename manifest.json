@@ -6,6 +6,18 @@
     "scripts": ["background.bundle.js"],
     "persistent": false
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.bundle.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "devtools_page": "devtool.html",
   "manifest_version": 2,
   "icons": {
     "48": "static/images/icon48.png"

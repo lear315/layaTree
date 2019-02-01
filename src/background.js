@@ -1,5 +1,4 @@
 chrome.extension.onConnect.addListener(function (port) {
-  console.log("backgroundScripts connect!");
   let extensionListener = function (message, sender, sendResponse) {
     if (message.tabId && message.content) {
       if (message.action === 'code') {
