@@ -64,7 +64,6 @@
 			},
 
 			methods: {
-
 				handleNodeClick(data) {
 					let uuid = data.uuid;
 					if (uuid !== undefined) {
@@ -78,27 +77,19 @@
 					this.treeData = [];
 					let sceneData = data.scene;
 					if (sceneData) {
-						// scene info
 						let dataRoot = {
 							type: sceneData.type, uuid: sceneData.uuid,
 							label: sceneData.name, children: []
 						};
 						this.treeData.push(dataRoot);
 						this.handleNodeClick(dataRoot);
-						// scene children info
+
 						for (let k in sceneData.children) {
 							let itemSceneData = sceneData.children[k];
-							// let sceneItem = {uuid: itemSceneData.uuid, label: itemSceneData.name, children: []};
 							let sceneItem = {};
 							dealChildrenNode(itemSceneData, sceneItem);
 							this.treeData[0].children.push(sceneItem);
 						}
-					}
-
-					// 节点树折叠的问题
-					if (JSON.stringify(this.treeData) === "[]") {
-						// 第一次赋值
-					} else {// 更新值
 					}
 
 					function dealChildrenNode(rootData, obj) {
@@ -119,11 +110,10 @@
 				getInjectScriptString() {
 					let code = treeinject.toString();
 					let array = code.split('\n');
-					array.splice(0, 1);// 删除开头
-					array.splice(-1, 1);// 删除结尾
+					array.splice(0, 3);// 删除开头
 					let evalCode = "";
 					for (let i = 0; i < array.length; i++) {
-					evalCode += array[i] + '\n';
+						evalCode += array[i] + '\n';
 					}
 					return evalCode;
 				},
