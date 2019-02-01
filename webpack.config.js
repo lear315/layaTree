@@ -9,12 +9,13 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
     entry: {
-        popup: path.resolve(__dirname, "./src/popup/main.js")
+        popup: path.resolve(__dirname, "./src/popup/main.js"),
+        background: path.resolve(__dirname, './src/background.js')
     },
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/',
-        filename: '[name].main.js'
+        filename: '[name].bundle.js'
     },
     module: {
         rules: [{

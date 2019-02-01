@@ -3,16 +3,16 @@
   "version": "1.0",
   "description": "Laya Tree",
   "background": {
-    "scripts": ["src/background.js"],
+    "scripts": ["background.bundle.js"],
     "persistent": false
   },
   "manifest_version": 2,
   "icons": {
-    "48": "src/res/icon48.png"
+    "48": "static/images/icon48.png"
   },
   "browser_action": {
-    "default_popup": "src/popup/popup.html",
-    "default_icon": "src/res/icon48.png"
+    "default_popup": "popup.html",
+    "default_icon": "static/images/icon48.png"
   },
   "permissions": [
     "tabs",
