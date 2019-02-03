@@ -20,6 +20,7 @@
 </template>
 
 <script>
+
 	import treeinject from './treeinject.js'
 
 	export default {
@@ -32,6 +33,7 @@
 		}
 		},
 		created() {
+
 			let backgroundPageConnection = chrome.extension.connect({
 				name: btoa("for" + String(chrome.devtools.inspectedWindow.tabId))
 			});
@@ -40,16 +42,16 @@
 				if (message !== null) {
 
 					switch (message.type) {
-						case window.LayaTreeMsg.updateNodeInfo:
+						case "updateNodeInfo":
 							this.isShowDebug = true;
 							this.updateView(message.msg);
 							break;
 
-						case window.LayaTreeMsg.updateNodeList:
+						case "updateNodeList":
 							this.isShowDebug = false;
 							break;
 
-						case window.LayaTreeMsg.notSupport:
+						case "notSupport":
 							this.isShowDebug = true;
 							this.treeItemData = message.msg;
 							break;
@@ -110,7 +112,6 @@
 				getInjectScriptString() {
 					let code = treeinject.toString();
 					let array = code.split('\n');
-					array.splice(0, 3);// 删除开头
 					let evalCode = "";
 					for (let i = 0; i < array.length; i++) {
 						evalCode += array[i] + '\n';
@@ -120,6 +121,7 @@
 
 				onBtnClickUpdatePage() {
 					let code = this.getInjectScriptString();
+					console.log("刷新成功!");
 					chrome.devtools.inspectedWindow.eval(code, function () {
 						console.log("刷新成功!");
 					});

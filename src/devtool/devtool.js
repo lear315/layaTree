@@ -19,3 +19,9 @@ chrome.devtools.panels.create(
         });
     }
 );
+
+window.LayaTreeMsg = {
+    updateNodeInfo: "updateNodeInfo", // 更新节点信息
+    updateNodeList: "updateNodeList", // 节点列表信息
+    notSupport: "notSupport", // 不支持的游戏
+};
