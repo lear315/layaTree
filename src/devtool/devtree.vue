@@ -20,7 +20,7 @@
 </template>
 
 <script>
-	import treeinject from '../treeinject.js'
+	import treeinject from './treeinject.js'
 
 	export default {
 		name: "devtree",

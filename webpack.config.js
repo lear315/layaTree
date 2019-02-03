@@ -13,7 +13,8 @@ module.exports = {
         background: path.resolve(__dirname, './src/background.js'),
         content: path.resolve(__dirname, './src/content.js'),
         devtool: path.resolve(__dirname, './src/devtool/devtool.js'),
-        devtree: path.resolve(__dirname, './src/devtool/devtree.js'),
+		devtree: path.resolve(__dirname, './src/devtool/devtree.js'),
+		treeinject: path.resolve(__dirname, './src/devtool/treeinject.js')
     },
     output: {
         path: path.resolve(__dirname, './dist'),
