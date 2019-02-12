@@ -26,13 +26,18 @@
 	export default {
 		name: "devtree",
 		data() {
-		return {
-			isShowDebug: false,
-			treeItemData: {},
-			treeData: [],
-		}
+			return {
+				isShowDebug: false,
+				treeItemData: {},
+				treeData: [],
+			}
 		},
 		created() {
+			if (chrome && chrome.extension) {
+
+			} else {
+				return;
+			}
 
 			let backgroundPageConnection = chrome.extension.connect({
 				name: btoa("for" + String(chrome.devtools.inspectedWindow.tabId))
@@ -115,6 +120,8 @@
 				getInjectScriptString() {
 					let code = treeinject.toString();
 					let array = code.split('\n');
+					array.splice(0, 1);// 删除开头
+        			array.splice(-1, 1);// 删除结尾
 					let evalCode = "";
 					for (let i = 0; i < array.length; i++) {
 						evalCode += array[i] + '\n';
@@ -124,8 +131,7 @@
 
 				onBtnClickUpdatePage() {
 					let code = this.getInjectScriptString();
-					console.log("刷新成功!");
-					chrome.devtools.inspectedWindow.eval(code, function () {
+					chrome.devtools.inspectedWindow.eval(code, function (result, e) {
 						console.log("刷新成功!");
 					});
 				},

@@ -1,3 +1,7 @@
+chrome.devtools.panels.elements.createSidebarPane('My SliderBar', function (sidebar) {
+    sidebar.setObject({some_data: "some data to show!"});
+});
+
 chrome.devtools.panels.create(
     "LayaTree",
     "static/images/icon48.png",
@@ -19,9 +23,3 @@ chrome.devtools.panels.create(
         });
     }
 );
-
-window.LayaTreeMsg = {
-    updateNodeInfo: "updateNodeInfo", // 更新节点信息
-    updateNodeList: "updateNodeList", // 节点列表信息
-    notSupport: "notSupport", // 不支持的游戏
-};
