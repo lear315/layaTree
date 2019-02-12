@@ -7,15 +7,15 @@ export default function () {
     };
 
     // 检测是否包含Laya变量
-    let isLayaGame = true;
+    var isLayaGame = true;
     try {
-        let layaGame = Laya;
+        var layaGame = Laya;
     } catch (e) {
         isLayaGame = false;
         window.sendMsgToDevTools("notSupport", "不支持调试游戏!");
     }
 
-    let postData = {
+    var postData = {
         stage: {
             name: "",
             children: []
@@ -25,7 +25,7 @@ export default function () {
     /**
      * 索引id
      */
-    let exId = 0;
+    var exId = 0;
 
 
     /**
@@ -33,22 +33,22 @@ export default function () {
      */
     function getNodeChildren(node, data) {
         exId = exId + 1;
-        let name = node.constructor.name;
+        var name = node.constructor.name;
         if (node.$owner) {
             name = name + " " + node.$owner.constructor.name;
         }
 
-        let nodeData = {
+        var nodeData = {
             exId,
             name,
             children: [],
         };
 
-        window.inspectorGameMemoryStorage[exId] = node;
+        window.nodeMemoryStroge[exId] = node;
 
-        let nodeChildren = node._children;
-        for (let i = 0; i < nodeChildren.length; i++) {
-            let childItem = nodeChildren[i];
+        var nodeChildren = node._children;
+        for (var i = 0; i < nodeChildren.length; i++) {
+            var childItem = nodeChildren[i];
             getNodeChildren(childItem, nodeData.children);
         }
 
@@ -57,10 +57,10 @@ export default function () {
 
     if (isLayaGame) {
 
-        let stage = Laya.stage;
+        var stage = Laya.stage;
         if (stage) {
             exId = 0;
-            let name = Laya.stage.constructor.name
+            var name = Laya.stage.constructor.name
             postData.stage = {
                 type: 1,
                 exId,
@@ -69,12 +69,12 @@ export default function () {
             };
             window.nodeMemoryStroge[exId] = stage;
 
-            let stageChildren = stage._children;
-            for (let i = 0; i < stageChildren.length; i++) {
-                let node = stageChildren[i];
+            var stageChildren = stage._children;;
+            for (var i = 0; i < stageChildren.length; i++) {
+                var node = stageChildren[i];
                 getNodeChildren(node, postData.stage.children);
             }
-            window.sendMsgToDevTools("nodeListInfo", postData);
+            window.sendMsgToDevTools("updateNodeList", postData);
         } else {
             postData.stage = null;
             window.sendMsgToDevTools("notSupport", "不支持调试游戏!");

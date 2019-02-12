@@ -48,12 +48,12 @@
 				if (message !== null) {
 
 					switch (message.type) {
-						case "updateNodeInfo":
+						case "updateNodeList":
 							this.isShowDebug = true;
 							this.updateView(message.msg);
 							break;
 
-						case "updateNodeList":
+						case "updateNodeInfo":
 							this.isShowDebug = true;
 							this.treeItemData = message.msg;
 							break;
