@@ -39,6 +39,7 @@
 			});
 			
 			backgroundPageConnection.onMessage.addListener(function (message) {
+				
 				if (message !== null) {
 
 					switch (message.type) {
