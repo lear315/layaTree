@@ -35,7 +35,7 @@ export default function () {
         exId = exId + 1;
         var name = node.constructor.name;
         if (node.$owner) {
-            name = name + " " + node.$owner.constructor.name;
+            name = node.$owner._name + "  " + node.$owner.constructor.name + "  " + name;
         }
 
         var nodeData = {
