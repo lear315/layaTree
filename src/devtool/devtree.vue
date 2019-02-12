@@ -48,12 +48,12 @@
 							break;
 
 						case "updateNodeList":
-							this.isShowDebug = false;
+							this.isShowDebug = true;
+							this.treeItemData = message.msg;
 							break;
 
 						case "notSupport":
-							this.isShowDebug = true;
-							this.treeItemData = message.msg;
+							this.isShowDebug = false;
 							break;
 					}
 				}
@@ -77,26 +77,28 @@
 				updateView(data) {
 					// 构建树形数据
 					this.treeData = [];
-					let sceneData = data.scene;
-					if (sceneData) {
+					let stageData = data.stage;
+					if (stageData) {
 						let dataRoot = {
-							type: sceneData.type, uuid: sceneData.uuid,
-							label: sceneData.name, children: []
+							type: stageData.type, 
+							uuid: stageData.exid,
+							label: stageData.name, 
+							children: []
 						};
 						this.treeData.push(dataRoot);
 						this.handleNodeClick(dataRoot);
 
-						for (let k in sceneData.children) {
-							let itemSceneData = sceneData.children[k];
-							let sceneItem = {};
-							dealChildrenNode(itemSceneData, sceneItem);
-							this.treeData[0].children.push(sceneItem);
+						for (let k in stageData.children) {
+							let itemData = stageData.children[k];
+							let nodeItem = {};
+							dealChildrenNode(itemData, nodeItem);
+							this.treeData[0].children.push(nodeItem);
 						}
 					}
 
 					function dealChildrenNode(rootData, obj) {
 						obj['data'] = rootData;
-						obj['uuid'] = rootData.uuid;
+						obj['uuid'] = rootData.exid;
 						obj['label'] = rootData.name;
 						obj['children'] = [];
 						let rootChildren = rootData.children;
