@@ -28,7 +28,7 @@ export default function () {
                     nodeType: 2,
                     type: node.constructor.name,
                     exId: node.exId,
-                    name: node.name,
+                    name: node.name || "",
                     transform: node.transform
                 };
             } else {
@@ -36,7 +36,7 @@ export default function () {
                     nodeType: 1,
                     type: node.constructor.name,
                     exId: node.exId,
-                    name: node.name,
+                    name: node.name || "",
                     x: node.x,
                     y: node.y,
                     zOrder: node.zOrder,

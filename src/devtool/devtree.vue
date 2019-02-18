@@ -13,9 +13,8 @@
 				</el-col>
 				<el-col :span="16">
 					<div class="grid-content bg-color-light tree-height">
-
-						<node2dproperty v-show=" treeItemData.nodeType === 'cc_Scene'"></node2dproperty>
-
+						<node2dproperty v-show=" treeItemData.nodeType == 1"></node2dproperty>
+						<node3dproperty v-show=" treeItemData.nodeType == 2"></node3dproperty>
 					</div>
 				</el-col>
 			</el-row>
