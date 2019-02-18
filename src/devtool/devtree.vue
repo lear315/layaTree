@@ -3,14 +3,21 @@
 		<el-button type="success" class="el-icon-refresh" size="mini" @click="onBtnClickUpdatePage">捕获刷新</el-button>
 		<div v-show="isShowDebug">
 			<el-row>
-			<el-col :span="8">
-				<div class="grid-content treeList">
-				<el-tree :data="treeData"
-						:props="defaultProps"
-						:expand-on-click-node="false"
-						@node-click="handleNodeClick"></el-tree>
-				</div>
-			</el-col>
+				<el-col :span="8">
+					<div class="grid-content tree-height" >
+					<el-tree :data="treeData"
+							:props="defaultProps"
+							:expand-on-click-node="false"
+							@node-click="handleNodeClick"></el-tree>
+					</div>
+				</el-col>
+				<el-col :span="16">
+					<div class="grid-content bg-color-light tree-height">
+
+						<node2dproperty v-show=" treeItemData.nodeType === 'cc_Scene'"></node2dproperty>
+
+					</div>
+				</el-col>
 			</el-row>
 		</div>
 		<div v-show="!isShowDebug">
@@ -73,9 +80,9 @@
 
 			methods: {
 				handleNodeClick(data) {
-					let uuid = data.uuid;
-					if (uuid !== undefined) {
-						let code = "window.getNodeInfo('" + uuid + "')";
+					let exId = data.exId;
+					if (exId !== undefined) {
+						let code = "window.getNodeInfo('" + exId + "')";
 						chrome.devtools.inspectedWindow.eval(code);
 					}
 				},
@@ -87,7 +94,7 @@
 					if (stageData) {
 						let dataRoot = {
 							type: stageData.type, 
-							uuid: stageData.exid,
+							exId: stageData.exId,
 							label: stageData.name, 
 							children: []
 						};
@@ -104,7 +111,7 @@
 
 					function dealChildrenNode(rootData, obj) {
 						obj['data'] = rootData;
-						obj['uuid'] = rootData.exid;
+						obj['exId'] = rootData.exId;
 						obj['label'] = rootData.name;
 						obj['children'] = [];
 						let rootChildren = rootData.children;
@@ -138,5 +145,28 @@
     }
   }
 </script>
+
+<style scoped>
+  .tree-height {
+    height: 100%
+  }
+
+  .bg-color {
+    background: #d3dce6;
+  }
+
+  .grid-content {
+    border-radius: 4px;
+    min-height: 20px;
+  }
+
+  .bg-color-light {
+    background: #e5e9f2;
+  }
+
+  body span h1 h2 h3 {
+    font-family: BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, 'SourceHanSansCN-Normal', Arial, sans-serif
+  }
+</style>
 
 
