@@ -13,8 +13,8 @@
 				</el-col>
 				<el-col :span="16">
 					<div class="grid-content bg-color-light tree-height">
-						<node2dproperty v-bind:itemData="treeItemData"></node2dproperty>
-						<!-- <node3dproperty v-show=" treeItemData.nodeType == 2"></node3dproperty> -->
+						<node2dproperty v-bind:itemData="treeItemData" v-show="nodeInfoType == 1"></node2dproperty>
+						<node3dproperty v-bind:itemData="treeItemData" v-show="nodeInfoType == 2"></node3dproperty>
 					</div>
 				</el-col>
 			</el-row>
@@ -50,6 +50,7 @@
                     scaleY: 0,
 				},
 				treeData: [],
+				nodeInfoType: 0,
 			}
 		},
 		created() {
@@ -76,6 +77,12 @@
 						case "updateNodeInfo":
 							this.isShowDebug = true;
 							this.treeItemData = message.msg;
+							if (this.treeItemData.nodeType == 1) 
+							{
+								this.nodeInfoType = 1;
+							} else if (this.treeItemData.nodeType == 2) {
+								this.nodeInfoType = 2;
+							}
 							break;
 
 						case "notSupport":
