@@ -54,6 +54,40 @@ export default function () {
         }
     };
 
+    window.pluginSetNodePosition = function (exId, x, y) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            node.x = x;
+            node.y = y;
+        }   
+    };
+
+    window.pluginSetNodeSize = function (exId, width, height) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            node.width = width;
+            node.height = height;
+        }
+    };
+
+    window.pluginSetNodeRotation = function (exId, rotation) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            node.rotation = rotation;
+        }
+    };
+
+    window.pluginSetNodeVisible = function (exId, isActive) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            if (isActive == 1) {
+                node.visible = true;
+            } else {
+                node.visible = false;
+            }
+        }
+    };
+
     // 检测是否包含Laya变量
     var isLayaGame = true;
     try {

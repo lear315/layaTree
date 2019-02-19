@@ -13,8 +13,8 @@
 				</el-col>
 				<el-col :span="16">
 					<div class="grid-content bg-color-light tree-height">
-						<node2dproperty v-show=" treeItemData.nodeType == 1"></node2dproperty>
-						<node3dproperty v-show=" treeItemData.nodeType == 2"></node3dproperty>
+						<node2dproperty v-bind:itemData="treeItemData"></node2dproperty>
+						<!-- <node3dproperty v-show=" treeItemData.nodeType == 2"></node3dproperty> -->
 					</div>
 				</el-col>
 			</el-row>
@@ -34,7 +34,21 @@
 		data() {
 			return {
 				isShowDebug: false,
-				treeItemData: {},
+				treeItemData: {
+                    nodeType: "",
+                    type: "",
+                    exId: "",
+                    name: "",
+                    x: 0,
+                    y: 0,
+                    zOrder: 0,
+                    width: 0,
+                    height: 0,
+                    visible: false,
+                    rotation: 0,
+                    scaleX: 0,
+                    scaleY: 0,
+				},
 				treeData: [],
 			}
 		},
