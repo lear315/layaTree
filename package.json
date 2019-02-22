@@ -29,6 +29,7 @@
     "url-loader": "^0.6.2",
     "vue": "^2.4.4",
     "vue-awesome": "^2.3.8",
+    "vue-resource": "^1.5.1",
     "vue-style-loader": "^4.1.2"
   },
   "devDependencies": {
