@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="btn" onclick="getText()">获取数据</div>
+        <div class="text"></div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+
+    function getText(){
+        $(".text").load("http:127.0.0.1:8066/updateInfo?version=0.9&name=aaa");
+    }
+
+</script>
+
+</html>
