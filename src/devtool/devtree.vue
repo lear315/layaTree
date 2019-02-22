@@ -57,11 +57,12 @@
 		},
 
 		created() {
+
+			// 检查版本更新
 			this.$http.get(chrome.extension.getURL('manifest.json'), {
 			}).then(function(response){  
 				var version = response.body.version;
-				// http://193.112.105.97:8066/updateInfo
-				this.$http.get('http://127.0.0.1:8066/updateInfo?version=' + version, {
+				this.$http.get('http://193.112.105.97:8066/updateInfo?version=' + version, {
 				}).then(function(response){  
 					// response.data中获取ResponseData实体
 					this.serverInfo = response.bodyText;
