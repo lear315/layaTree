@@ -6,7 +6,18 @@ export default function () {
         window.postMessage({type: type, msg: msg}, "*");
     };
 
-    
+    // 弧度转换为角度
+    window.rad2degrees = function (radians) {
+        var degrees = radians * (180 / Math.PI);
+        return degrees.toFixed(3);
+    };
+
+    // 角度转换为弧度
+    window.degrees2rad = function (degrees) {
+        var radians = degrees * (Math.PI / 180);
+        return radians.toFixed(3);
+    };
+        
     window.getNodeName = function (node) {
         var nodeName = node.constructor.name;
         if (node.$owner) {
@@ -23,13 +34,23 @@ export default function () {
         var node = window.nodeMemoryStroge[exId];
         if (node) {
             var nodeData;
-            if (node.transform && node.transform.constructor.name == 'Transform3D') {
+            if (node.transform && (node.transform.constructor.name == 'Transform3D')) {
+                var curTransform = node.transform
                 nodeData = {
                     nodeType: 2,
                     type: node.constructor.name,
                     exId: node.exId,
                     name: node.name || "",
-                    transform: node.transform
+                    x: curTransform.localPositionX,
+                    y: curTransform.localPositionY,
+                    z: curTransform.localPositionZ,
+                    rotationX: rad2degrees(curTransform.localRotationX),
+                    rotationY: rad2degrees(curTransform.localRotationY),
+                    rotationZ: rad2degrees(curTransform.localRotationZ),
+                    scaleX: curTransform.localScaleX,
+                    scaleY: curTransform.localScaleY,
+                    scaleZ: curTransform.localScaleZ,
+                    active: node.active
                 };
             } else {
                 nodeData = {
@@ -62,6 +83,15 @@ export default function () {
         }   
     };
 
+    window.pluginSetNodePosition3D = function (exId, x, y, z) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            node.transform.localPositionX = x;
+            node.transform.localPositionY = y;
+            node.transform.localPositionZ = z;
+        }   
+    };
+
     window.pluginSetNodeSize = function (exId, width, height) {
         let node = window.nodeMemoryStroge[exId];
         if (node) {
@@ -77,6 +107,24 @@ export default function () {
         }
     };
 
+    window.pluginSetNodeRotation3D = function (exId, rotationX, rotationY, rotationZ) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            node.transform.localRotationX = degrees2rad(rotationX);
+            node.transform.localRotationY = degrees2rad(rotationY);
+            node.transform.localRotationZ = degrees2rad(rotationZ);
+        }
+    };
+
+    window.pluginSetNodeScale3D = function (exId, scaleX, scaleY, scaleZ) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            node.transform.localScaleX = scaleX;
+            node.transform.localScaleY = scaleY;
+            node.transform.localScaleZ = scaleZ;
+        }
+    };
+
     window.pluginSetNodeVisible = function (exId, isActive) {
         let node = window.nodeMemoryStroge[exId];
         if (node) {
@@ -84,6 +132,17 @@ export default function () {
                 node.visible = true;
             } else {
                 node.visible = false;
+            }
+        }
+    };
+
+    window.pluginSetNodeActive = function (exId, isActive) {
+        let node = window.nodeMemoryStroge[exId];
+        if (node) {
+            if (isActive == 1) {
+                node.active = true;
+            } else {
+                node.active = false;
             }
         }
     };
