@@ -4,7 +4,7 @@
 		<el-button type="success" class="el-icon-refresh" size="mini" @click="onBtnClickUpdatePage">捕获刷新</el-button>
 		<div v-show="isShowDebug">
 			<el-row>
-				<el-col :span="8">
+				<el-col :span="9">
 					<div class="grid-content tree-height" >
 					<el-tree :data="treeData"
 							:props="defaultProps"

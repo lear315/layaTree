@@ -44,9 +44,9 @@ export default function () {
                     x: curTransform.localPositionX,
                     y: curTransform.localPositionY,
                     z: curTransform.localPositionZ,
-                    rotationX: rad2degrees(curTransform.localRotationX),
-                    rotationY: rad2degrees(curTransform.localRotationY),
-                    rotationZ: rad2degrees(curTransform.localRotationZ),
+                    rotationX: curTransform.localRotationEulerX,
+                    rotationY: curTransform.localRotationEulerY,
+                    rotationZ: curTransform.localRotationEulerZ,
                     scaleX: curTransform.localScaleX,
                     scaleY: curTransform.localScaleY,
                     scaleZ: curTransform.localScaleZ,
@@ -110,9 +110,9 @@ export default function () {
     window.pluginSetNodeRotation3D = function (exId, rotationX, rotationY, rotationZ) {
         let node = window.nodeMemoryStroge[exId];
         if (node) {
-            node.transform.localRotationX = degrees2rad(rotationX);
-            node.transform.localRotationY = degrees2rad(rotationY);
-            node.transform.localRotationZ = degrees2rad(rotationZ);
+            node.transform.localRotationEulerX = rotationX;
+            node.transform.localRotationEulerY = rotationY;
+            node.transform.localRotationEulerZ = rotationZ;
         }
     };
 
