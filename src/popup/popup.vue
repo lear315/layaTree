@@ -14,8 +14,8 @@
     <div id="foot" style="height: 30px;">
       <span style="font-size: 14px;float: left;text-align: center;line-height: 30px;color: #6d6d6d;">联系方式:</span>
       <div style="height: 100%;float: right;margin-right: 10px;">
-        <a href="https://github.com/lear315/layaTree" target="_blank">
-          <img src="static/images/github_icon.png" style="height: 100%;">
+        <a href="https://gitee.com/lear315/layaTree" target="_blank">
+          <img src="static/images/gitee_icon.jpg" style="height: 100%;">
         </a>
       </div>
     </div>
