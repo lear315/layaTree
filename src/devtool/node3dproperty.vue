@@ -33,7 +33,7 @@
                         v-model="itemData.y">
                     </uiprop>
 
-                    <uiprop name="Y" style="width: 34%;float: left; cursor: ew-resize;"
+                    <uiprop name="Z" style="width: 34%;float: left; cursor: ew-resize;"
                     @movestep="changePositionLocalZ"
                     step="0.02">
                         <input class="myInput"
@@ -64,7 +64,7 @@
                         v-model="itemData.rotationY">
                     </uiprop>
 
-                    <uiprop name="Y" style="width: 34%;float: left; cursor: ew-resize;"
+                    <uiprop name="Z" style="width: 34%;float: left; cursor: ew-resize;"
                     @movestep="changeRotationZ"
                     step="1">
                         <input class="myInput"
@@ -95,7 +95,7 @@
                         v-model="itemData.scaleY">
                     </uiprop>
 
-                    <uiprop name="Y" style="width: 34%;float: left; cursor: ew-resize;"
+                    <uiprop name="Z" style="width: 34%;float: left; cursor: ew-resize;"
                     @movestep="changeScaleZ"
                     step="0.1">
                         <input class="myInput"
