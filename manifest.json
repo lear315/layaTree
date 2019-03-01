@@ -1,6 +1,6 @@
 {
   "name": "Laya Tree",
-  "version": "0.91",
+  "version": "0.92",
   "description": "Laya Tree",
   "background": {
     "scripts": ["background.bundle.js"],

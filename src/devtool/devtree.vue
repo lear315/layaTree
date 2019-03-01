@@ -8,12 +8,15 @@
 					<div class="grid-content tree-height" >
 					<el-tree :data="treeData"
 							:props="defaultProps"
+							ref="vuetree"
 							:expand-on-click-node="false"
-							@node-click="handleNodeClick"></el-tree>
+							@node-click="handleNodeClick"
+							highlight-current node-key="exId"
+							></el-tree>
 					</div>
 				</el-col>
-				<el-col :span="16">
-					<div class="grid-content bg-color-light tree-height">
+				<el-col :span="16" >
+					<div class="grid-content tree-height node-info">
 						<node2dproperty v-bind:itemData="treeItemData" v-show="nodeInfoType == 1"></node2dproperty>
 						<node3dproperty v-bind:itemData="treeItemData" v-show="nodeInfoType == 2"></node3dproperty>
 					</div>
@@ -122,6 +125,7 @@
 		methods: {
 			handleNodeClick(data) {
 				let exId = data.exId;
+				this.$refs['vuetree'].setCurrentKey(exId);
 				if (exId !== undefined) {
 					let code = "window.getNodeInfo('" + exId + "')";
 					chrome.devtools.inspectedWindow.eval(code);
@@ -188,26 +192,28 @@
 </script>
 
 <style scoped>
-  .tree-height {
-    height: 100%
-  }
+	.tree-height {
+		height: 100%
+	}
 
-  .bg-color {
-    background: #d3dce6;
-  }
+	.bg-color {
+		background: #d3dce6;
+	}
 
-  .grid-content {
-    border-radius: 4px;
-    min-height: 20px;
-  }
+	.grid-content {
+		border-radius: 4px;
+		min-height: 20px;
+	}
 
-  .bg-color-light {
-    background: #e5e9f2;
-  }
+	body span h1 h2 h3 {
+		font-family: BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, 'SourceHanSansCN-Normal', Arial, sans-serif
+	}
 
-  body span h1 h2 h3 {
-    font-family: BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, 'SourceHanSansCN-Normal', Arial, sans-serif
-  }
+	.node-info {
+		position: fixed;
+		top: 30px;
+		background: #ffffff;
+	}
 </style>
 
 
