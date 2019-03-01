@@ -184,7 +184,13 @@ export default function () {
         window.nodeMemoryStroge[exId] = node;
         node.exId = exId;
 
-        var nodeChildren = node._children;
+        var nodeChildren = [];
+        if (node._children) {
+            nodeChildren = node._children;
+        } else if (node._childs) {
+            nodeChildren = node._childs;
+        }
+
         for (var i = 0; i < nodeChildren.length; i++) {
             var childItem = nodeChildren[i];
             getNodeChildren(childItem, nodeData.children);
@@ -207,7 +213,12 @@ export default function () {
             };
             window.nodeMemoryStroge[exId] = stage;
 
-            var stageChildren = stage._children;;
+            var stageChildren = [];
+            if (stage._children) {
+                stageChildren = stage._children;
+            } else if (stage._childs) {
+                stageChildren = stage._childs;
+            }
             for (var i = 0; i < stageChildren.length; i++) {
                 var node = stageChildren[i];
                 getNodeChildren(node, postData.stage.children);
