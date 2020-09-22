@@ -23,7 +23,7 @@
     "fs-extra": "^5.0.0",
     "gulp": "^4.0.0",
     "gulp-shell": "^0.6.5",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.13.1",
     "path": "^0.12.7",
     "sass-loader": "^6.0.6",
     "url-loader": "^0.6.2",
