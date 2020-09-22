@@ -1,7 +1,19 @@
 <template>
     <div id="devtree">
 		<div> {{serverInfo}}</div>
-		<el-button type="success" class="el-icon-refresh" size="mini" @click="onBtnClickUpdatePage">捕获刷新</el-button>
+		<div style="margin-top:5px;margin-left:5px">  
+			<el-row>
+				<el-col :span="24">
+					<div class="grid-content bg-purple-dark">
+						<el-button ref="pauseBtn" type="primary" class="el-icon-time" size="mini" @click="onBtnClickPausePage"> 暂停</el-button>
+						<el-button ref="stepBtn" type="info" class="el-icon-arrow-right" size="mini" @click="onBtnClickStepPage"> 单步</el-button>
+					</div>
+				</el-col>
+			</el-row>
+		</div>
+		<div style="margin-top:5px;margin-left:5px"> 
+			<el-button type="success" class="el-icon-refresh" size="mini" @click="onBtnClickUpdatePage">捕获刷新</el-button>
+		</div>
 		<div v-show="isShowDebug">
 			<el-row>
 				<el-col :span="8">
@@ -24,7 +36,7 @@
 			</el-row>
 		</div>
 		<div v-show="!isShowDebug">
-			未发现Laya的游戏!
+			未发现Laya的游戏!!
 		</div>
     </div>
 </template>
@@ -32,6 +44,7 @@
 <script>
 
 	import treeinject from './treeinject.js'
+	import loopinject from './gameloopinject.js'
 
 	export default {
 		name: "devtree",
@@ -55,7 +68,8 @@
 				},
 				treeData: [],
 				nodeInfoType: 0,
-				serverInfo: ""
+				serverInfo: "",
+				layaStatePause: false,
 			}
 		},
 
@@ -120,6 +134,14 @@
 					console.log("on vue:" + JSON.stringify(event.data));
 					console.log("on vue:" + JSON.stringify(event));
 			}, false);
+
+
+			// 初始列表
+			this.onBtnClickUpdatePage();
+
+			// 侵入主循环 window.requestAnimationFrame
+			this.initLayaLoopInject();
+
 		},
 
 		methods: {
@@ -169,8 +191,7 @@
 				}
 			},
 
-			getInjectScriptString() {
-				let code = treeinject.toString();
+			getInjectScriptString(code) {
 				let array = code.split('\n');
 				array.splice(0, 1);// 删除开头
 				array.splice(-1, 1);// 删除结尾
@@ -182,11 +203,59 @@
 			},
 
 			onBtnClickUpdatePage() {
-				let code = this.getInjectScriptString();
+				let rawcode = treeinject.toString();
+				let code = this.getInjectScriptString(rawcode);
 				chrome.devtools.inspectedWindow.eval(code, function (result, e) {
 					console.log("刷新成功!");
 				});
 			},
+
+			// 游戏暂停
+			onBtnClickPausePage() {
+				if (this.isShowDebug == false) {
+					return;
+				}
+
+				if (this.layaStatePause == false) {
+					this.$refs['pauseBtn'].type = "warning";
+					this.$refs['stepBtn'].type = "primary";
+					chrome.devtools.inspectedWindow.eval(" window.layaStatePause = true;", function (result, e) {
+						console.log("暂停成功!");
+					});
+					this.layaStatePause = true;
+
+				} else {
+					this.$refs['pauseBtn'].type = "primary";
+					this.$refs['stepBtn'].type = "info";
+					chrome.devtools.inspectedWindow.eval(" window.layaStatePause = false;", function (result, e) {
+						console.log("恢复成功!");
+					});
+					this.layaStatePause = false;
+
+				}
+			},
+
+			// 单步运行
+			onBtnClickStepPage() {
+				if (this.isShowDebug == false) {
+					return;
+				}
+				
+				if (this.layaStatePause == true) {
+					chrome.devtools.inspectedWindow.eval(" window.layaStepCount += 2;", function (result, e) {
+						console.log("单步成功!");
+					});
+				}
+			},
+
+			initLayaLoopInject() {
+				let rawcode = loopinject.toString();
+				let code = this.getInjectScriptString(rawcode);
+				chrome.devtools.inspectedWindow.eval(code, function (result, e) {
+					console.log("循环注入成功!");
+				});
+			},
+
     	}
   }
 </script>

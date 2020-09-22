@@ -1,6 +1,8 @@
 window.addEventListener('message', function (event) {
-    let data = event.data;
-    chrome.extension.sendMessage(data);
+    if(typeof chrome.app.isInstalled !== undefined && event !== null) { 
+        let data = event.data;
+        chrome.extension.sendMessage(data);
+    }
 }, false);
   
   
