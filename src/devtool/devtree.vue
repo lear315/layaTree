@@ -6,7 +6,7 @@
 				<el-col :span="24">
 					<div class="grid-content bg-purple-dark">
 						<el-button ref="pauseBtn" type="primary" class="el-icon-time" size="mini" @click="onBtnClickPausePage"> 暂停</el-button>
-						<el-button ref="stepBtn" type="info" class="el-icon-arrow-right" size="mini" @click="onBtnClickStepPage"> 单步</el-button>
+						<el-button ref="stepBtn" type="info" class="el-icon-arrow-right" size="mini" @click="onBtnClickStepPage"> 单帧</el-button>
 					</div>
 				</el-col>
 			</el-row>
@@ -126,6 +126,12 @@
 						case "notSupport":
 							this.isShowDebug = false;
 							break;
+						
+						case "beforeunload":
+							this.initLayaLoopInject();
+							this.layaStatePause = false;
+							this.onBtnRender();
+							break;
 					}
 				}
 			}.bind(this));
@@ -141,6 +147,14 @@
 
 			// 侵入主循环 window.requestAnimationFrame
 			this.initLayaLoopInject();
+
+			// 绑定页面刷新
+			// this.bindPageRefresh();
+			window.addEventListener('beforeunload', ()=> {
+				this.initLayaLoopInject();
+				this.layaStatePause = false;
+				this.btnRedener();
+			}, false);
 
 		},
 
@@ -189,6 +203,11 @@
 						obj.children.push(item);
 					}
 				}
+
+				setTimeout(() => {
+					this.btnRedener();
+				}, 50);
+				
 			},
 
 			getInjectScriptString(code) {
@@ -231,11 +250,21 @@
 						console.log("恢复成功!");
 					});
 					this.layaStatePause = false;
-
 				}
 			},
 
-			// 单步运行
+			btnRedener() {
+				if (this.layaStatePause == true) {
+					this.$refs['pauseBtn'].type = "warning";
+					this.$refs['stepBtn'].type = "primary";
+
+				} else {
+					this.$refs['pauseBtn'].type = "primary";
+					this.$refs['stepBtn'].type = "info";
+				}
+			},
+
+			// 单帧运行
 			onBtnClickStepPage() {
 				if (this.isShowDebug == false) {
 					return;
@@ -243,7 +272,7 @@
 				
 				if (this.layaStatePause == true) {
 					chrome.devtools.inspectedWindow.eval(" window.layaStepCount += 2;", function (result, e) {
-						console.log("单步成功!");
+						console.log("单帧成功!");
 					});
 				}
 			},
@@ -255,6 +284,16 @@
 					console.log("循环注入成功!");
 				});
 			},
+
+			// 绑定页面刷新
+            bindPageRefresh() {
+                window.onbeforeunload = (event) => {
+                    this.initLayaLoopInject();
+                    this.layaStatePause = false;
+                    this.onBtnRender();
+                };
+            },
+
 
     	}
   }

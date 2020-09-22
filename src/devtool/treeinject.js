@@ -201,6 +201,10 @@ export default function () {
 
     if (isLayaGame) {
 
+        window.addEventListener('beforeunload', ()=> {
+            window.sendMsgToDevTools("beforeunload", {});
+        }, false);
+
         var stage = Laya.stage;
         if (stage) {
             exId = 0;
