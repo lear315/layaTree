@@ -5,14 +5,20 @@
 			<el-row>
 				<el-col :span="24">
 					<div class="grid-content bg-purple-dark">
-						<el-button ref="pauseBtn" type="primary" class="el-icon-time" size="mini" @click="onBtnClickPausePage"> 暂停</el-button>
-						<el-button ref="stepBtn" type="info" class="el-icon-arrow-right" size="mini" @click="onBtnClickStepPage"> 单帧</el-button>
+						<div v-if="layaStatePause === false">
+							<el-button ref="pauseBtn" type="primary" class="el-icon-time" size="mini" @click="onBtnClickPausePage"> 暂停</el-button>
+							<el-button ref="stepBtn" type="info" class="el-icon-arrow-right" size="mini" @click="onBtnClickStepPage"> 单帧</el-button>
+						</div>
+						<div v-else>
+							<el-button ref="pauseBtn" type="warning" class="el-icon-time" size="mini" @click="onBtnClickPausePage"> 暂停</el-button>
+							<el-button ref="stepBtn" type="primary" class="el-icon-arrow-right" size="mini" @click="onBtnClickStepPage"> 单帧</el-button>
+						</div>
 					</div>
 				</el-col>
 			</el-row>
 		</div>
 		<div style="margin-top:5px;margin-left:5px"> 
-			<el-button type="success" class="el-icon-refresh" size="mini" @click="onBtnClickUpdatePage">捕获刷新</el-button>
+			<el-button ref="refreshBtn" type="success" class="el-icon-refresh" size="mini" @click="onBtnClickUpdatePage">捕获刷新</el-button>
 		</div>
 		<div v-show="isShowDebug">
 			<el-row>
@@ -24,6 +30,8 @@
 							:expand-on-click-node="false"
 							@node-click="handleNodeClick"
 							highlight-current node-key="exId"
+							:default-checked-keys="defaultExpandKeys"
+							:default-expanded-keys="defaultExpandKeys"
 							></el-tree>
 					</div>
 				</el-col>
@@ -70,6 +78,8 @@
 				nodeInfoType: 0,
 				serverInfo: "",
 				layaStatePause: false,
+				curSelectIndex: 0,
+				defaultExpandKeys: [],
 			}
 		},
 
@@ -128,9 +138,15 @@
 							break;
 						
 						case "beforeunload":
-							this.initLayaLoopInject();
+							// 页面刷新
+							this.$refs['refreshBtn'].disabled = true;
 							this.layaStatePause = false;
-							this.onBtnRender();
+							this.isShowDebug = false;
+							this.curSelectIndex = 0;
+
+							setTimeout(() => {
+								this.forceRefresh();
+							}, 2000);
 							break;
 					}
 				}
@@ -147,20 +163,23 @@
 
 			// 侵入主循环 window.requestAnimationFrame
 			this.initLayaLoopInject();
-
-			// 绑定页面刷新
-			// this.bindPageRefresh();
-			window.addEventListener('beforeunload', ()=> {
-				this.initLayaLoopInject();
-				this.layaStatePause = false;
-				this.btnRedener();
-			}, false);
-
 		},
 
 		methods: {
+			forceRefresh() {
+				
+				this.$refs['refreshBtn'].disabled = false;
+				this.initLayaLoopInject();
+				this.onBtnClickUpdatePage();
+			},
+
 			handleNodeClick(data) {
 				let exId = data.exId;
+				this.selectNodeShowInfo(exId);
+			},
+
+			selectNodeShowInfo(exId) {
+				this.curSelectIndex = exId;
 				this.$refs['vuetree'].setCurrentKey(exId);
 				if (exId !== undefined) {
 					let code = "window.getNodeInfo('" + exId + "')";
@@ -168,7 +187,15 @@
 				}
 			},
 
+
 			updateView(data) {
+				// setTimeout(() => {
+				// 	this.selectNodeShowInfo(this.curSelectIndex);
+				// }, 500);
+				
+				this.defaultExpandKeys = [];
+				this.defaultExpandKeys.push(this.curSelectIndex);
+
 				// 构建树形数据
 				this.treeData = [];
 				let stageData = data.stage;
@@ -203,11 +230,6 @@
 						obj.children.push(item);
 					}
 				}
-
-				setTimeout(() => {
-					this.btnRedener();
-				}, 50);
-				
 			},
 
 			getInjectScriptString(code) {
@@ -253,17 +275,6 @@
 				}
 			},
 
-			btnRedener() {
-				if (this.layaStatePause == true) {
-					this.$refs['pauseBtn'].type = "warning";
-					this.$refs['stepBtn'].type = "primary";
-
-				} else {
-					this.$refs['pauseBtn'].type = "primary";
-					this.$refs['stepBtn'].type = "info";
-				}
-			},
-
 			// 单帧运行
 			onBtnClickStepPage() {
 				if (this.isShowDebug == false) {
@@ -284,17 +295,6 @@
 					console.log("循环注入成功!");
 				});
 			},
-
-			// 绑定页面刷新
-            bindPageRefresh() {
-                window.onbeforeunload = (event) => {
-                    this.initLayaLoopInject();
-                    this.layaStatePause = false;
-                    this.onBtnRender();
-                };
-            },
-
-
     	}
   }
 </script>

@@ -147,6 +147,11 @@ export default function () {
         }
     };
 
+    /**
+     * 索引id
+     */
+    window.exId = 0;
+
     // 检测是否包含Laya变量
     var isLayaGame = true;
     try {
@@ -164,17 +169,16 @@ export default function () {
     };
 
     /**
-     * 索引id
-     */
-    var exId = 0;
-
-    /**
      * 收集节点信息
      */
     function getNodeChildren(node, data) {
-        exId = exId + 1;
-        var name = window.getNodeName(node);
+        let exId = node.exId;
+        if (exId == undefined) {
+            window.exId += 1;
+            exId = window.exId;
+        }
 
+        var name = window.getNodeName(node);
         var nodeData = {
             exId,
             name,
@@ -204,6 +208,8 @@ export default function () {
         window.addEventListener('beforeunload', ()=> {
             window.sendMsgToDevTools("beforeunload", {});
         }, false);
+
+        window.nodeMemoryStroge = {};
 
         var stage = Laya.stage;
         if (stage) {
