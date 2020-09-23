@@ -29,9 +29,9 @@
 							ref="vuetree"
 							:expand-on-click-node="false"
 							@node-click="handleNodeClick"
-							highlight-current node-key="exId"
-							:default-checked-keys="defaultExpandKeys"
+							node-key="exId"
 							:default-expanded-keys="defaultExpandKeys"
+							:highlight-current="true"
 							></el-tree>
 					</div>
 				</el-col>
@@ -120,6 +120,7 @@
 						case "updateNodeList":
 							this.isShowDebug = true;
 							this.updateView(message.msg);
+							this.forceHandleNodeClick();
 							break;
 
 						case "updateNodeInfo":
@@ -175,11 +176,18 @@
 
 			handleNodeClick(data) {
 				let exId = data.exId;
+				this.curSelectIndex = exId;
 				this.selectNodeShowInfo(exId);
 			},
 
+			forceHandleNodeClick() {
+				this.$nextTick(() => {
+					this.selectNodeShowInfo(this.curSelectIndex);
+				});
+				
+			},
+
 			selectNodeShowInfo(exId) {
-				this.curSelectIndex = exId;
 				this.$refs['vuetree'].setCurrentKey(exId);
 				if (exId !== undefined) {
 					let code = "window.getNodeInfo('" + exId + "')";
@@ -189,10 +197,6 @@
 
 
 			updateView(data) {
-				// setTimeout(() => {
-				// 	this.selectNodeShowInfo(this.curSelectIndex);
-				// }, 500);
-				
 				this.defaultExpandKeys = [];
 				this.defaultExpandKeys.push(this.curSelectIndex);
 
@@ -207,7 +211,7 @@
 						children: []
 					};
 					this.treeData.push(dataRoot);
-					this.handleNodeClick(dataRoot);
+					this.selectNodeShowInfo(dataRoot.exId);
 
 					for (let k in stageData.children) {
 						let itemData = stageData.children[k];

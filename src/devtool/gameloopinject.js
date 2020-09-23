@@ -10,9 +10,6 @@ export default function () {
 
 
     if (isLayaGame) {
-        // 索引id重置
-        window.exId = 0;
-
         // laya 暂停状态
         window.layaStatePause = false;
 

@@ -1,6 +1,7 @@
 // 注入脚本的代码
 export default function () {
     window.nodeMemoryStroge = window.nodeMemoryStroge || {};
+    window.uuid = window.uuid || 0;
 
     window.sendMsgToDevTools = function (type, msg) {
         window.postMessage({type: type, msg: msg}, "*");
@@ -147,11 +148,6 @@ export default function () {
         }
     };
 
-    /**
-     * 索引id
-     */
-    window.exId = 0;
-
     // 检测是否包含Laya变量
     var isLayaGame = true;
     try {
@@ -173,9 +169,10 @@ export default function () {
      */
     function getNodeChildren(node, data) {
         let exId = node.exId;
-        if (exId == undefined) {
-            window.exId += 1;
-            exId = window.exId;
+        if (exId == null || exId == undefined) {
+            window.uuid += 1;
+            exId = window.uuid;
+            node.exId = exId;
         }
 
         var name = window.getNodeName(node);
@@ -186,8 +183,7 @@ export default function () {
         };
 
         window.nodeMemoryStroge[exId] = node;
-        node.exId = exId;
-
+        
         var nodeChildren = [];
         if (node._children) {
             nodeChildren = node._children;
