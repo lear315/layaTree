@@ -7,7 +7,9 @@
     <br/>
     <div style="margin:0 auto;width:100%;">
       <div style="width: 200px; margin: 0 auto;" v-show="isShowMoneyPng">
-        <img style="width: 100%;height: auto;" src="static/images/money.jpg">
+        <a href="https://womenzhai.cn/articleDetail?article_id=5f6afd44029db26f911a803d" target="_blank">
+          <img style="width: 100%;height: auto;" src="static/images/layatree.png">
+        </a>
       </div>
     </div>
     <br/>
