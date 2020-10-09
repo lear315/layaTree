@@ -1,6 +1,10 @@
 <template>
     <div id="node2dinfo">
         <div>
+            <uiprop name="属性面板：">
+                <span></span>
+            </uiprop>
+
             <uiprop name="ExId">
                 <span> {{itemData.exId}}</span>
             </uiprop>
@@ -97,6 +101,18 @@
             <uiprop name="zOrder">
                 <span>{{itemData.zOrder}}</span>
             </uiprop>
+
+            <uiprop name="输出">
+                <div style="height: 90%;">
+                <el-button size="mini" 
+                @click="onBtnConsole"
+                >输出到控制台</el-button>
+                 </div>
+            </uiprop>
+
+            <uiprop name="">
+                <span></span>
+            </uiprop>
         </div>
     </div>
 </template>
@@ -138,9 +154,9 @@
             changePosition() {
                 this._evalCode(
                     "window.pluginSetNodePosition(" +
-                    "'" + this.itemData.exId + "'," +
-                    "'" + this.itemData.x + "'," +
-                    "'" + this.itemData.y + "'" +
+                    "" + this.itemData.exId + "," +
+                    "" + this.itemData.x + "," +
+                    "" + this.itemData.y + "" +
                     ")");
                 this._freshNode();
             },
@@ -171,6 +187,17 @@
             onBtnClickNodeShow() {
                 this._evalCode("window.pluginSetNodeVisible('" + this.itemData.exId + "', 1);");
                 this._freshNode();
+            },
+
+            
+            onBtnConsole() {
+                if (this.itemData && this.itemData.exId != undefined) {
+                    this._evalCode(`window.console.log('成功输出节点nodeMemoryStroge[${this.itemData.exId}]！')`);
+                    this._evalCode(`window.console.log(nodeMemoryStroge[${this.itemData.exId}])`);
+                } else {
+                    this._evalCode(`window.console.log('请选择节点！')`);
+                }
+
             },
 
             _freshNode() {
